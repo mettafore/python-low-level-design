@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from features import Addition, Subtraction, Multiplication, Division, InMemoryHistoryManager
 
 class FeatureFactory(ABC):
-    """An abstract base class for creating calculator factories."""
+    """An abstract base class for creating feature factories."""
     @abstractmethod
     def create_feature(self):
         """Creates a calculator."""
@@ -20,7 +20,7 @@ class FeatureFactory(ABC):
         elif type == "/":
             return DivisionFactory()
         elif type == "history":
-            return InMemoryHistoryManager()
+            return InMemoryHistoryManagerFactory()
         else:
             raise Exception("Invalid calculation type") from None
 
@@ -54,3 +54,8 @@ class DivisionFactory(FeatureFactory):
         """Creates a division calculator."""
         return Division()
     
+class InMemoryHistoryManagerFactory(FeatureFactory):
+    """A factory for creating in-memory history managers."""
+    def create_feature(self):
+        """Creates an in-memory history manager."""
+        return InMemoryHistoryManager()

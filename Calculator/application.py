@@ -21,7 +21,7 @@ class CalculatorApplication:
 
     def __init__(self):
         """Constructs all the necessary attributes for the CalculatorApplication object."""
-        self.history_manager = FeatureFactory.create_factory("history")
+        self.history_manager = FeatureFactory.create_factory("history").create_feature()
 
     def run(self):
         """Runs the calculator application."""
