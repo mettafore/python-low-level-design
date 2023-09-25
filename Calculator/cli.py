@@ -67,6 +67,7 @@ class CalculatorApplication:
         """Displays the history of calculations."""
         print("History:")
         self.history_manager.view_history()
+        input("Press enter to continue")
 
 if __name__=="__main__":
     calculator_application = CalculatorApplication()

@@ -18,7 +18,8 @@ class InMemoryHistoryManager(HistoryManager):
     def view_history(self):
         for idx, history in enumerate(self.history):
             print(f"{idx+1}.", history)
-        input("Press enter to continue")
+    def __str__(self):
+        return '\n'.join(self.history) if self.history else "No calculations performed yet"
     def append_history(self, history):
         self.history.append(history)
 
