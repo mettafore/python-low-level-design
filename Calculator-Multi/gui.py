@@ -58,5 +58,5 @@ class CalculatorApplication:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = CalculatorApplication(root)
+    app = CalculatorApplication(root, 'normal')
     root.mainloop()
