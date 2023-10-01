@@ -1,6 +1,6 @@
 # Hackathon Low Level Design
 
-This project is a low level design for a Hackathon event. It includes the backend API design and implementation.
+This project is a low level design for a Hackathon event. It includes the backend API design and implementation. The goal of this project is to demonstrate an understanding of low level design concepts such as SOLID principles, design patterns, and database design.
 
 ## API Endpoints
 
