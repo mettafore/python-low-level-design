@@ -1,0 +1,22 @@
+.App {
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+form {
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+label {
+  margin-right: 10px;
+}
+
+div {
+  margin-bottom: 15px;
+}
