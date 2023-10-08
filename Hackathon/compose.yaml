@@ -1,32 +1,5 @@
 version: "3.7"
 services:
-  fastapi:
-    build:
-      context: ./backend/
-      dockerfile: Dockerfile
-    restart: always
-    ports:
-      - 8000:8000
-    command: >
-      bash -c "
-      chmod +x /usr/src/app/set-env-with-secret.sh &&
-      source /usr/src/app/set-env-with-secret.sh &&
-      cd api &&
-      uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-    volumes:
-      - ./backend:/usr/src/app
-    environment:
-      STREAMING: "True"
-      LOG_LEVEL: "DEBUG"
-      MAX_RETRIES: "6"
-      REQUEST_TIMEOUT: "100"
-      LOG_GROUP : "/app/AMXChatbot"
-      LOG_LOCAL_SETUP: "False"
   postgres:
     build:
       context: ./database/
@@ -45,3 +18,54 @@ services:
       retries: 5
     volumes:
       - postgres-data:/var/lib/postgresql/data
+  # fastapi:
+  #   build:
+  #     context: ./backend/
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   ports:
+  #     - 8000:8000
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   command: >
+  #     bash -c "
+  #     chmod +x /usr/src/app/modify-hosts.sh &&
+  #     bash /usr/src/app/modify-hosts.sh &&
+  #     echo "hosts modified" &&
+  #     cd api &&
+  #     uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 3
+  #   volumes:
+  #     - ./backend:/usr/src/app
+  #   environment:
+  #     STREAMING: "True"
+  #     LOG_LEVEL: "DEBUG"
+  #     MAX_RETRIES: "6"
+  #     REQUEST_TIMEOUT: "100"
+  #     LOG_GROUP : "/app/AMXChatbot"
+  #     LOG_LOCAL_SETUP: "True"
+  # react:
+  #   build:
+  #     context: ./frontend/
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   ports:
+  #     - 3000:80
+  #   environment:
+  #     REACT_APP_BACKEND_URL: "10.202.105.49"
+  #   depends_on:
+  #     fastapi:
+  #       condition: service_healthy
+  #   command: nginx -g "daemon off;"
+  #   healthcheck:
+  #     test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 3
+volumes:
+  postgres-data:
