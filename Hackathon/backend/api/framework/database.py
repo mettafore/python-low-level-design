@@ -7,16 +7,7 @@ from pydantic import BaseModel
 from os import environ
 
 
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-
-
-
-# as_engine = create_async_engine("postgresql+asyncpg://postgres:root@postgres:5432/postgres")
-
-# # AsyncSession maker
-# async_session = sessionmaker(as_engine, expire_on_commit=False, class_=AsyncSession)
-
-Session = sessionmaker(
+SessionFactory = sessionmaker(
     bind=create_engine(environ.get("DATABASE_URL")))
 
 def get_sorted_list_of_tables():
@@ -40,7 +31,7 @@ def get_crud_session():
 
 
 def get_session():
-    return Session()
+    return SessionFactory()
 
 
 def managed_transaction(func):

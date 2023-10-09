@@ -18,37 +18,29 @@ services:
       retries: 5
     volumes:
       - postgres-data:/var/lib/postgresql/data
-  # fastapi:
-  #   build:
-  #     context: ./backend/
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   ports:
-  #     - 8000:8000
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #   command: >
-  #     bash -c "
-  #     chmod +x /usr/src/app/modify-hosts.sh &&
-  #     bash /usr/src/app/modify-hosts.sh &&
-  #     echo "hosts modified" &&
-  #     cd api &&
-  #     uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
-  #   healthcheck:
-  #     test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 3
-  #   volumes:
-  #     - ./backend:/usr/src/app
-  #   environment:
-  #     STREAMING: "True"
-  #     LOG_LEVEL: "DEBUG"
-  #     MAX_RETRIES: "6"
-  #     REQUEST_TIMEOUT: "100"
-  #     LOG_GROUP : "/app/AMXChatbot"
-  #     LOG_LOCAL_SETUP: "True"
+  fastapi:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8000:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      bash -c "
+      cd api &&
+      uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./backend:/usr/src/app
+    environment:
+      DATABASE_URL: "postgresql+psycopg2://postgres:root@postgres:5432/postgres"
   # react:
   #   build:
   #     context: ./frontend/

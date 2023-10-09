@@ -20,6 +20,9 @@ class User(Base):
     last_name = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
     modified_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    books = relationship('Book', back_populates='seller')
+    orders = relationship('Order', back_populates='buyer')  # Add this line
+
 
 
 class Book(Base):
@@ -37,6 +40,7 @@ class Book(Base):
     delete_flag = Column(Boolean, default=False)
 
     seller = relationship('User', back_populates='books')
+    orders = relationship('Order', back_populates='book')
 
 
 class Order(Base):
