@@ -1,16 +1,17 @@
-from os.path import join
-from dotenv import load_dotenv
-load_dotenv(join("config", ".env"))
+# from os.path import join
+# from dotenv import load_dotenv
+# load_dotenv(join("config", ".env"))
 
-import uvicorn
+# import uvicorn
 from fastapi import FastAPI
 from controllers.UserController import user_router
-from controllers.AdminController import admin_router
-from controllers.OrderController import order_router
-from controllers.BooksController import book_router
-from controllers.ExploreController import explore_router
+# from controllers.AdminController import admin_router
+# from controllers.OrderController import order_router
+# from controllers.BooksController import book_router
+# from controllers.ExploreController import explore_router
+from controllers.HealthController import health_router
 from fastapi.middleware.cors import CORSMiddleware
-from framework.initial_setup import initial_setup, delete_all_tables
+# from framework.initial_setup import initial_setup, delete_all_tables
 
 app = FastAPI()
 
@@ -27,12 +28,13 @@ app.add_middleware(
 
 
 app.include_router(user_router)
-app.include_router(admin_router)
-app.include_router(order_router)
-app.include_router(book_router)
-app.include_router(explore_router)
+app.include_router(health_router)
+# app.include_router(admin_router)
+# app.include_router(order_router)
+# app.include_router(book_router)
+# app.include_router(explore_router)
 
 
 # Initial Setup
-delete_all_tables()
-initial_setup()
+# delete_all_tables()
+# initial_setup()
