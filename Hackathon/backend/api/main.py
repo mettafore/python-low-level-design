@@ -1,7 +1,3 @@
-# from os.path import join
-# from dotenv import load_dotenv
-# load_dotenv(join("config", ".env"))
-
 # import uvicorn
 from fastapi import FastAPI
 from controllers.UserController import user_router
@@ -12,7 +8,10 @@ from controllers.UserController import user_router
 from controllers.HealthController import health_router
 from fastapi.middleware.cors import CORSMiddleware
 # from framework.initial_setup import initial_setup, delete_all_tables
+from os.path import join
+from dotenv import load_dotenv
 
+load_dotenv(join("config", ".env"))
 app = FastAPI()
 
 origins = ['*']

@@ -12,8 +12,7 @@ class Role(Enum):
     ADMIN = 'admin'
     SUPERADMIN = 'superadmin'
 
-
-class UserCreate(BaseModel, ABC):
+class UserCreate(BaseModel):
     """
     Represents a user creation request.
     """
@@ -23,9 +22,8 @@ class UserCreate(BaseModel, ABC):
     last_name: str
     role: Role  # Fix the role type
 
-    @abstractmethod
     def get_role(self):
-        pass
+        return self.role
 
 
 class AdminCreate(UserCreate):
