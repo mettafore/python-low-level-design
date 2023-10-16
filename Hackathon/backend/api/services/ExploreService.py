@@ -1,3 +1,22 @@
+from abc import ABC, abstractmethod
+from typing import List
+from framework.schema import Book, 
+
+@ABC
+class DataSource:
+    @abstractmethod
+    def search(self, specification: Specification, query: Query) -> List[Book]:
+        pass
+
+    @abstractmethod
+    def browse(self, specification: Specification, query: Query) -> List[Book]:
+        pass
+        
+    
+    def get_categories(self):
+        pass
+
+
 class OperationStrategy:
     """
     This class represents a strategy for performing operations on a data source.
