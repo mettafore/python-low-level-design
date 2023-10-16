@@ -14,8 +14,6 @@ class PaymentFactory(ABC):
     def create_upi_payment(self):
         pass
 
- 
-
 
 class CreditCardPayment(ABC):
     @abstractmethod
@@ -109,19 +107,27 @@ class PhonePeHealthChecker(PaymentGatewayHealthCheckerInterface):
 
 # Observer Pattern's main Observable class
 class PaymentGatewayHealthChecker:
-    def __init__(self):
-        self._observers = []
-        self._default_payment = "razor_pay"
-        self._health_checkers = {
-            "razor_pay": RazorPayHealthChecker(),
-            "phone_pe": PhonePeHealthChecker(),
-        }
+
+    _instance = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(PaymentGatewayHealthChecker, cls).__new__(cls)
+            cls._instance._observers = []
+            cls._instance._default_payment = "razor_pay"
+            cls._instance._health_checkers = {
+                "razor_pay": RazorPayHealthChecker(),
+                "phone_pe": PhonePeHealthChecker(),
+            }
+        return cls._instance
     
     def register_observer(self, observer):
-        self._observers.append(observer)
+        if observer not in self._observers:
+            self._observers.append(observer)
     
     def remove_observer(self, observer):
-        self._observers.remove(observer)
+        if observer in self._observers:
+            self._observers.remove(observer)
 
     def notify_observers(self):
         for observer in self._observers:
@@ -172,3 +178,28 @@ class PaymentManager:
 
     def process_payment_with_upi(self, amount):
         self.upi_payment.process_upi_payment(amount)
+
+
+class PaymentServiceImp:
+    def __init__(self) -> None:
+        # Health checker and payment manager setup
+        self.health_checker = PaymentGatewayHealthChecker()
+        self.payment_manager = PaymentManager()
+
+        # Registering payment manager as an observer
+        self.health_checker.register_observer(self.payment_manager)
+    
+    def _check_and_update_payment_solution(self):
+        # Performing health check
+        self.health_checker.check_health()
+
+    def initiate_payment(self, amount, method):
+        self._check_and_update_payment_solution()
+
+        payment_id = str(uuid.uuid4())
+        if method == "credit_card":
+            self.payment_manager.process_payment_with_credit_card(amount)
+        elif method == "net_banking":
+            self.payment_manager.process_payment_with_net_banking(amount)
+        elif method == "upi":
+            self.payment_manager.process_payment_with_upi(amount)
