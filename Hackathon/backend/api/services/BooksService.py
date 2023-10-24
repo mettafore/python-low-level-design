@@ -1,6 +1,6 @@
 class  BooksService:
-    def __init__(self):
-        pass
+    def __init__(self, session):
+        self.session = session
 
     def upload_book(self):
         pass
@@ -14,9 +14,14 @@ class  BooksService:
     def update_book(self):
         pass
 
-    def delete_book(self):
-        pass
+    def delete_book(self, book_id: int):
+        self.session.query(Book).filter(Book.id == book_id).delete()
+        self.session.commit()
+        return True
 
+    def get_all_books_page(self, page_number: int):
+        pagination = self.session.query(Book).order_by(text("id")).paginate(page=page_number, per_page=10, error_out=False)
+        return pagination.items, pagination.pages
 
 class BookDirector:
     def __init__(self, builder: BookBuilder):
