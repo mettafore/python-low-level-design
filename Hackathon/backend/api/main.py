@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # from framework.initial_setup import initial_setup, delete_all_tables
 from os.path import join
 from dotenv import load_dotenv
+from framework.initial_setup import initial_setup
 
 load_dotenv(join("config", ".env"))
 app = FastAPI()
@@ -36,4 +37,4 @@ app.include_router(health_router)
 
 # Initial Setup
 # delete_all_tables()
-# initial_setup()
+initial_setup()

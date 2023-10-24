@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 class  BooksService:
     def __init__(self, session):
         self.session = session
@@ -17,7 +18,7 @@ class  BooksService:
     def delete_book(self, book_id: int):
         self.session.query(Book).filter(Book.id == book_id).delete()
         self.session.commit()
-        return True
+        return HTTPException(status_code=status.HTTP_204_NO_CONTENT)
 
     def get_all_books_page(self, page_number: int):
         pagination = self.session.query(Book).order_by(text("id")).paginate(page=page_number, per_page=10, error_out=False)

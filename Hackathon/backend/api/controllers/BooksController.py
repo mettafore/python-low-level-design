@@ -10,6 +10,7 @@ DELETE /books/{book_id} - Delete a specific book (For Sellers/Admin)
 
 from services.BooksService import BooksService
 from fastapi import Depends, HTTPException, APIRouter, status, Header
+from services.AuthService import PasswordAuthStrategy
 
 book_router = APIRouter(prefix="/books", tags=["Book"])
 
@@ -39,5 +40,6 @@ async def update_book(book_id: int, book_data: BookCreate, session: Session = De
 
 
 @book_router.delete("/{book_id}")
-async def delete_book(book_id: int, session: Session = Depends(get_session)):
-    return BooksService(session).delete_book(book_id)
+async def delete_book(book_id: int, session: Session = Depends(get_session), payload=Depends(PasswordAuthStrategy().decode_token)):
+    print(payload)
+    # return BookService(session).delete_book(book_id)
